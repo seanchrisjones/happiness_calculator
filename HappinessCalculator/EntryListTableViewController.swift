@@ -8,11 +8,12 @@
 
 import UIKit
 
+//creating a global property that  we can call from anwhere
 let notificationKey = Notification.Name(rawValue: "didChangeHappiness")
 
 
 class EntryListTableViewController: UITableViewController {
-    
+    //shouting out that we just u[dated our average happiness
     var averageHappiness: Int = 0 {
         //Property Observer
         didSet{

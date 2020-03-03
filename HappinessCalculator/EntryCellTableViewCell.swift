@@ -8,7 +8,9 @@
 
 import UIKit
 
+//Declaring a protocol and allowing it to use class elvel object
 protocol EntryCellTableViewCellDelegate: class{
+    //creating a job  the Boss, TableView Cell, is telling the intern, TableListViewController to do
     func switchToggledOn(cell:EntryCellTableViewCell)
     
 }
@@ -24,6 +26,8 @@ class EntryCellTableViewCell: UITableViewCell {
     //MARK: PROPERTIES
     
     var entry: Entry?
+    
+    // creating our Runner
     weak var delegate: EntryCellTableViewCellDelegate?
     
     //MARK: HELPER FUNCTIONS
@@ -34,7 +38,7 @@ class EntryCellTableViewCell: UITableViewCell {
         
     }
     
-    func updateUI(averageHappiness: Int){
+    @objc func updateUI(averageHappiness: Int){
         guard let entry = entry else {return}
         titleLabel.text = entry.title
         isEnabledSwitch.isOn = entry.isIncluded
@@ -45,10 +49,20 @@ class EntryCellTableViewCell: UITableViewCell {
     }
     
    @objc func createObserver(){
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: notificationKey, object: nil)
+    //creating our Person who wil listen for our notification, the call recalculate happiness
+        NotificationCenter.default.addObserver(self, selector: #selector(recalculateHappiness), name: notificationKey, object: nil)
+    }
+    
+    @objc func recalculateHappiness(notification: NSNotification){
+        guard let averageHappiness = notification.object as? Int else{return}
+        updateUI(averageHappiness: averageHappiness)
+        
+        
+        
     }
     
     @IBAction func toggledIsIncluded(_ sender: Any) {
+        // telling our runner to go tell pur intern to do something
         delegate?.switchToggledOn(cell: self)
     }
     
