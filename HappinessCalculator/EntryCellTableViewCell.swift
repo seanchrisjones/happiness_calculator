@@ -44,6 +44,10 @@ class EntryCellTableViewCell: UITableViewCell {
         //update higher or lower after notifications
     }
     
+   @objc func createObserver(){
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: notificationKey, object: nil)
+    }
+    
     @IBAction func toggledIsIncluded(_ sender: Any) {
         delegate?.switchToggledOn(cell: self)
     }
